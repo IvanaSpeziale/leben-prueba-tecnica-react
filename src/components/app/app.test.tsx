@@ -1,8 +1,9 @@
 import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { Provider } from 'react-redux';
-import App from './app.tsx';
-import store from '../../store/index.ts';
+import store from '../../store';
+import React from 'react';
+import App from './app';
 
 test('should render the banner', () => {
   render(
