@@ -1,8 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { Provider } from 'react-redux';
-import '@testing-library/jest-dom';
-
 import store from '../../store';
 import Login from '../auth/login';
 import Tasks from '../tasks/taskList';

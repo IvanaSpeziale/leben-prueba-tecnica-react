@@ -10,7 +10,10 @@ export const login = async (
   password: string
 ): Promise<User> => {
   try {
-    const response = await axiosInstance.post('/login', { username, password });
+    const response = await axiosInstance.post('/login', {
+      usernameOrEmail: username,
+      password,
+    });
     return response.data;
   } catch (error) {
     console.error('Error in login:', error);
@@ -20,12 +23,14 @@ export const login = async (
 
 export const register = async (
   username: string,
-  password: string
+  password: string,
+  email: string
 ): Promise<User> => {
   try {
     const response = await axiosInstance.post('/signup', {
       username,
       password,
+      email,
     });
     return response.data;
   } catch (error) {

@@ -17,9 +17,13 @@ const useAuth = () => {
     }
   };
 
-  const register = async (username: string, password: string) => {
+  const register = async (
+    username: string,
+    password: string,
+    email: string
+  ) => {
     try {
-      await dispatch(registerUser({ username, password }));
+      await dispatch(registerUser({ username, password, email }));
     } catch (error) {
       console.error('Error during registration', error);
       throw error;
