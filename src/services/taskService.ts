@@ -1,6 +1,6 @@
 import axiosInstance from './axiosConfig';
 
-export const getTasks = async () => {
+export const fetchTasks = async () => {
   try {
     const response = await axiosInstance.get('/assignment');
     return response.data;

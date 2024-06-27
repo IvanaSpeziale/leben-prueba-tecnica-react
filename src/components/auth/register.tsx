@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import useAuth from '../../hooks/useAuth';
 
 const Register: React.FC = () => {
@@ -6,11 +7,16 @@ const Register: React.FC = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [email, setEmail] = useState('');
+  const [error, setError] = useState<string | null>(null);
+  const navigate = useNavigate();
 
   const handleRegister = async () => {
     try {
-      await register(email, username, password);
+      await register(username, password, email);
+      setError(null);
+      navigate('/login'); // Redirige al login después del registro exitoso
     } catch (error) {
+      setError('Registration failed. Please try again.');
       console.error('Error during registration:', error);
     }
   };
@@ -18,7 +24,8 @@ const Register: React.FC = () => {
   return (
     <div>
       <h2>Register</h2>
-      <form>
+      {error && <p style={{ color: 'red' }}>{error}</p>}
+      <form onSubmit={(e) => e.preventDefault()}>
         <input
           type="email"
           placeholder="Email"

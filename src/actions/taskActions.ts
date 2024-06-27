@@ -1,81 +1,63 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
+import { Task } from '../types';
 import {
-  getTasks as apiGetTasks,
+  fetchTasks as apiFetchTasks,
   addTask as apiAddTask,
   deleteTask as apiDeleteTask,
   updateTask as apiUpdateTask,
 } from '../services/taskService';
+import { RootState } from '../store';
+import { setAuthToken } from '../services/api';
 
-// Tipo para los datos de una tarea
-interface TaskData {
-  id: string;
-  title: string;
-  description: string;
-}
+export const fetchTasks = createAsyncThunk('tasks/fetchTasks', async () => {
+  const response = await apiFetchTasks();
+  return response.data;
+});
 
-// Acción asíncrona para obtener tareas
-export const getTasks = createAsyncThunk(
-  'tasks/getTasks',
-  async (_, thunkAPI) => {
-    try {
-      const tasks = await apiGetTasks();
-      return tasks;
-    } catch (error) {
-      console.error('Error getting tasks:', error);
-      return thunkAPI.rejectWithValue(error);
-    }
-  }
-);
-
-// Acción asíncrona para agregar una tarea
 export const addTask = createAsyncThunk(
   'tasks/addTask',
-  async (taskData: TaskData, thunkAPI) => {
+  async (newTask: Task, { getState }) => {
+    const { auth } = getState() as RootState;
+    const { token } = auth;
+
     try {
-      const newTask = await apiAddTask(taskData);
-      return newTask;
-    } catch (error) {
-      console.error('Error adding task:', error);
-      return thunkAPI.rejectWithValue(error);
+      setAuthToken(token);
+      const response = await apiAddTask(newTask);
+      return response.data;
+    } catch (error: any) {
+      throw new Error('Error al agregar tarea: ' + error.message);
     }
   }
 );
 
-// Acción asíncrona para eliminar una tarea
 export const deleteTask = createAsyncThunk(
   'tasks/deleteTask',
-  async (taskId: string, thunkAPI) => {
+  async (taskId: string, { getState }) => {
+    const { auth } = getState() as RootState;
+    const { token } = auth;
+
     try {
+      setAuthToken(token);
       await apiDeleteTask(taskId);
       return taskId;
-    } catch (error) {
-      console.error('Error deleting task:', error);
-      return thunkAPI.rejectWithValue(error);
+    } catch (error: any) {
+      throw new Error('Error al eliminar tarea: ' + error.message);
     }
   }
 );
 
-// Acción asíncrona para actualizar una tarea
 export const updateTask = createAsyncThunk(
   'tasks/updateTask',
-  async (taskData: TaskData, thunkAPI) => {
+  async (updatedTask: Task, { getState }) => {
+    const { auth } = getState() as RootState;
+    const { token } = auth;
+
     try {
-      const updatedTask = await apiUpdateTask(taskData);
-      return updatedTask;
-    } catch (error) {
-      console.error('Error updating task:', error);
-      return thunkAPI.rejectWithValue(error);
+      setAuthToken(token);
+      const response = await apiUpdateTask(updatedTask);
+      return response.data;
+    } catch (error: any) {
+      throw new Error('Error al actualizar tarea: ' + error.message);
     }
   }
 );
-
-// Acción síncrona para acciones adicionales relacionadas con las tareas (por ejemplo, marcar tarea como completada)
-export const markTaskCompleted = (taskId: string) => ({
-  type: 'tasks/markTaskCompleted',
-  payload: taskId,
-});
-
-// Acción síncrona para limpiar las tareas en el estado (por ejemplo, al cerrar sesión)
-export const clearTasks = () => ({
-  type: 'tasks/clearTasks',
-});

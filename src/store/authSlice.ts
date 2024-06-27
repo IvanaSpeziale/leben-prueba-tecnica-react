@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { loginUser, registerUser, logoutUser } from '../actions/authActions';
+import { setAuthToken } from '../services/api';
 
 interface AuthState {
   user: string | null;
@@ -24,6 +25,12 @@ const authSlice = createSlice({
     setToken(state, action: PayloadAction<string | null>) {
       state.token = action.payload;
       state.isAuthenticated = Boolean(action.payload);
+      setAuthToken(action.payload);
+    },
+    clearToken(state) {
+      state.token = null;
+      state.isAuthenticated = false;
+      setAuthToken(null);
     },
     setLoading(state, action: PayloadAction<boolean>) {
       state.isLoading = action.payload;
@@ -37,7 +44,8 @@ const authSlice = createSlice({
       .addCase(loginUser.fulfilled, (state, action) => {
         state.isLoading = false;
         state.token = action.payload;
-        state.isAuthenticated = Boolean(action.payload);
+        state.isAuthenticated = true;
+        setAuthToken(action.payload);
       })
       .addCase(loginUser.rejected, (state, action) => {
         state.isLoading = false;
@@ -61,6 +69,7 @@ const authSlice = createSlice({
         state.isLoading = false;
         state.token = null;
         state.isAuthenticated = false;
+        setAuthToken(null);
       })
       .addCase(logoutUser.rejected, (state, action) => {
         state.isLoading = false;
@@ -69,6 +78,6 @@ const authSlice = createSlice({
   },
 });
 
-export const { setToken, setLoading } = authSlice.actions;
+export const { setToken, clearToken, setLoading } = authSlice.actions;
 
 export default authSlice.reducer;

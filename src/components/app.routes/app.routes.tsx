@@ -1,5 +1,5 @@
-// import React, { lazy, Suspense } from 'react';
-// import { BrowserRouter as Router, Route } from 'react-router-dom';
+// Import React, { lazy, Suspense } from 'react';
+// import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
 // const Account = lazy(() => import('./pages/Account'));
 // const Assignments = lazy(() => import('./pages/Assignments'));
@@ -8,20 +8,21 @@
 // const Login = lazy(() => import('./pages/Login'));
 // const Signup = lazy(() => import('./pages/Signup'));
 
-// const AppRoutes: React.FC = () => {
-//   return (
-//     <Router>
-//       <Suspense fallback={null}>
-//         <Route path="/accounts/me" Component={Account} />
-//         <Route path="/assignment/:id" Component={AssignmentDetails} />
-//         <Route path="/assignment" Component={Assignments} />
-//         <Route path="/assignment-status" Component={AssignmentStatus} />
-//         <Route path="/login" Component={Login} />
-//         <Route path="/signup" Component={Signup} />
-//         <Route path="/" Component={Login} />
-//       </Suspense>
-//     </Router>
-//   );
-// };
+// const AppRoutes: React.FC = () => (
+//   <Router>
+//     <Suspense fallback={<div>Loading...</div>}>
+//       <Routes>
+//         <Route path="/accounts/me" element={<Account />} />
+//         <Route path="/assignment/:id" element={<AssignmentDetails />} />
+//         <Route path="/assignment" element={<Assignments />} />
+//         <Route path="/assignment-status" element={<AssignmentStatus />} />
+//         <Route path="/login" element={<Login />} />
+//         <Route path="/signup" element={<Signup />} />
+//         <Route path="/" element={<Login />} />{' '}
+//         {/* Add "exact" for home route */}
+//       </Routes>
+//     </Suspense>
+//   </Router>
+// );
 
 // export default AppRoutes;

@@ -1,24 +1,33 @@
 import React, { useState, useEffect } from 'react';
-import useTasks from '../../hooks/useTask';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '../../store';
+import {
+  fetchTasks,
+  addTask,
+  deleteTask,
+  updateTask,
+} from '../../actions/taskActions';
+import { Task } from '../../types';
 
 const Tasks: React.FC = () => {
-  const {
-    tasks,
-    loading,
-    fetchTasks,
-    addNewTask,
-    removeTask,
-    updateExistingTask,
-  } = useTasks();
+  const dispatch = useDispatch<AppDispatch>();
+  const { tasks, loading } = useSelector((state: RootState) => state.tasks);
   const [newTaskTitle, setNewTaskTitle] = useState('');
 
   useEffect(() => {
-    fetchTasks(); // Cargar las tareas al montar el componente
-  }, [fetchTasks]);
+    dispatch(fetchTasks());
+  }, [dispatch, fetchTasks]);
 
   const handleAddTask = async () => {
     try {
-      await addNewTask({ title: newTaskTitle }); // Envía los datos necesarios para agregar una tarea
+      await dispatch(
+        addTask({
+          id: '1',
+          title: newTaskTitle,
+          description: '',
+          status: 'not_started',
+        })
+      );
       setNewTaskTitle('');
     } catch (error) {
       console.error('Error adding task:', error);
@@ -27,7 +36,7 @@ const Tasks: React.FC = () => {
 
   const handleDeleteTask = async (taskId: string) => {
     try {
-      await removeTask(taskId); // Envía el ID de la tarea para eliminarla
+      await dispatch(deleteTask(taskId));
     } catch (error) {
       console.error('Error deleting task:', error);
     }
@@ -36,10 +45,12 @@ const Tasks: React.FC = () => {
   const handleUpdateTask = async (
     taskId: string,
     title: string,
-    status: string
+    status: 'not_started' | 'in_progress' | 'completed'
   ) => {
     try {
-      await updateExistingTask({ id: taskId, title, status }); // Envía los datos de la tarea actualizada
+      await dispatch(
+        updateTask({ id: taskId, title, description: '', status })
+      );
     } catch (error) {
       console.error('Error updating task:', error);
     }
@@ -59,7 +70,7 @@ const Tasks: React.FC = () => {
       </button>
       {loading && <p>Loading...</p>}
       <ul>
-        {tasks.map((task: any) => (
+        {tasks.map((task: Task) => (
           <li key={task.id}>
             {task.title}
             <button
