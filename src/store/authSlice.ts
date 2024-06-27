@@ -4,6 +4,7 @@ import { loginUser, registerUser, logoutUser } from '../actions/authActions';
 interface AuthState {
   user: string | null;
   token: string | null;
+  isAuthenticated: boolean;
   isLoading: boolean;
   error: string | null;
 }
@@ -11,6 +12,7 @@ interface AuthState {
 const initialState: AuthState = {
   user: null,
   token: null,
+  isAuthenticated: false,
   isLoading: false,
   error: null,
 };
@@ -21,6 +23,7 @@ const authSlice = createSlice({
   reducers: {
     setToken(state, action: PayloadAction<string | null>) {
       state.token = action.payload;
+      state.isAuthenticated = Boolean(action.payload);
     },
     setLoading(state, action: PayloadAction<boolean>) {
       state.isLoading = action.payload;
@@ -34,6 +37,7 @@ const authSlice = createSlice({
       .addCase(loginUser.fulfilled, (state, action) => {
         state.isLoading = false;
         state.token = action.payload;
+        state.isAuthenticated = Boolean(action.payload);
       })
       .addCase(loginUser.rejected, (state, action) => {
         state.isLoading = false;
@@ -56,6 +60,7 @@ const authSlice = createSlice({
       .addCase(logoutUser.fulfilled, (state) => {
         state.isLoading = false;
         state.token = null;
+        state.isAuthenticated = false;
       })
       .addCase(logoutUser.rejected, (state, action) => {
         state.isLoading = false;
