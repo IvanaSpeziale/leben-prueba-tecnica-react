@@ -4,6 +4,7 @@ import { Provider } from 'react-redux';
 import { MemoryRouter } from 'react-router-dom';
 import ErrorPage from './error-page';
 import store from '../store';
+import React from 'react';
 
 describe('Given the page Register', () => {
   describe('When it is rendered', () => {

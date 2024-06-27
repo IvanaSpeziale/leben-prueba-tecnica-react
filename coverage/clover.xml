@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1719357660846" clover="3.2.0">
-  <project timestamp="1719357660846" name="All files">
-    <metrics statements="249" coveredstatements="91" conditionals="33" coveredconditionals="11" methods="55" coveredmethods="9" elements="337" coveredelements="111" complexity="0" loc="249" ncloc="249" packages="9" files="16" classes="16"/>
+<coverage generated="1719404391882" clover="3.2.0">
+  <project timestamp="1719404391883" name="All files">
+    <metrics statements="251" coveredstatements="93" conditionals="33" coveredconditionals="11" methods="55" coveredmethods="9" elements="339" coveredelements="113" complexity="0" loc="251" ncloc="251" packages="9" files="16" classes="16"/>
     <package name="actions">
       <metrics statements="49" coveredstatements="13" conditionals="2" coveredconditionals="0" methods="9" coveredmethods="0"/>
       <file name="authActions.ts" path="C:\Users\Usuario\Desktop\prueba-tecnica-leben\src\actions\authActions.ts">
@@ -61,9 +61,10 @@
       </file>
     </package>
     <package name="components.app">
-      <metrics statements="10" coveredstatements="10" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
+      <metrics statements="11" coveredstatements="11" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
       <file name="app.tsx" path="C:\Users\Usuario\Desktop\prueba-tecnica-leben\src\components\app\app.tsx">
-        <metrics statements="10" coveredstatements="10" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
+        <metrics statements="11" coveredstatements="11" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
+        <line num="1" count="1" type="stmt"/>
         <line num="2" count="1" type="stmt"/>
         <line num="3" count="1" type="stmt"/>
         <line num="4" count="1" type="stmt"/>
@@ -73,7 +74,7 @@
         <line num="9" count="1" type="stmt"/>
         <line num="11" count="1" type="stmt"/>
         <line num="12" count="1" type="stmt"/>
-        <line num="27" count="1" type="stmt"/>
+        <line num="25" count="1" type="stmt"/>
       </file>
     </package>
     <package name="components.auth">
@@ -220,11 +221,12 @@
       </file>
     </package>
     <package name="pages">
-      <metrics statements="3" coveredstatements="3" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
+      <metrics statements="4" coveredstatements="4" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
       <file name="error-page.tsx" path="C:\Users\Usuario\Desktop\prueba-tecnica-leben\src\pages\error-page.tsx">
-        <metrics statements="3" coveredstatements="3" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
+        <metrics statements="4" coveredstatements="4" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
         <line num="1" count="1" type="stmt"/>
-        <line num="2" count="1" type="stmt"/>
+        <line num="3" count="1" type="stmt"/>
+        <line num="4" count="1" type="stmt"/>
         <line num="10" count="1" type="stmt"/>
       </file>
     </package>

@@ -5,10 +5,11 @@ const Register: React.FC = () => {
   const { register, isLoading } = useAuth();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [email, setEmail] = useState('');
 
   const handleRegister = async () => {
     try {
-      await register(username, password);
+      await register(email, username, password);
     } catch (error) {
       console.error('Error during registration:', error);
     }
@@ -18,6 +19,12 @@ const Register: React.FC = () => {
     <div>
       <h2>Register</h2>
       <form>
+        <input
+          type="email"
+          placeholder="Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
         <input
           type="text"
           placeholder="Username"

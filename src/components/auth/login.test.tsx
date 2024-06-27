@@ -1,4 +1,3 @@
-// login.test.tsx
 import { render, screen } from '@testing-library/react';
 import Login from './login';
 import userEvent from '@testing-library/user-event';
@@ -7,6 +6,7 @@ import '@testing-library/jest-dom';
 import { Provider } from 'react-redux';
 import store from '../../store/index';
 import useAuth from '../../hooks/useAuth';
+import React from 'react';
 
 jest.mock('../../hooks/useAuth', () => ({
   __esModule: true,

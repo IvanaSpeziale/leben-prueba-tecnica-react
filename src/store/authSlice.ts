@@ -19,14 +19,14 @@ const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
-    setToken: (state, action: PayloadAction<string | null>) => {
+    setToken(state, action: PayloadAction<string | null>) {
       state.token = action.payload;
     },
-    setLoading: (state, action: PayloadAction<boolean>) => {
+    setLoading(state, action: PayloadAction<boolean>) {
       state.isLoading = action.payload;
     },
   },
-  extraReducers: (builder) => {
+  extraReducers(builder) {
     builder
       .addCase(loginUser.pending, (state) => {
         state.isLoading = true;
