@@ -43,6 +43,10 @@ const tasksSlice = createSlice({
       })
       .addCase(addTask.fulfilled, (state, action) => {
         state.loading = false;
+        if (!Array.isArray(state.tasks)) {
+          state.tasks = [];
+        }
+
         state.tasks.push(action.payload);
       })
       .addCase(addTask.rejected, (state, action) => {

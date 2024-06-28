@@ -1,7 +1,11 @@
 import axiosInstance from './axiosConfig';
 
-export const fetchTasks = async () => {
+export const fetchTasks = async (token: string | null) => {
   try {
+    if (token) {
+      axiosInstance.defaults.headers.common.Authorization = `Bearer ${token}`;
+    }
+
     const response = await axiosInstance.get('/assignment');
     return response.data;
   } catch (error) {
@@ -10,8 +14,12 @@ export const fetchTasks = async () => {
   }
 };
 
-export const addTask = async (taskData: any) => {
+export const addTask = async (taskData: any, token: string | null) => {
   try {
+    if (token) {
+      axiosInstance.defaults.headers.common.Authorization = `Bearer ${token}`;
+    }
+
     const response = await axiosInstance.post('/assignment', taskData);
     return response.data;
   } catch (error) {
@@ -20,8 +28,12 @@ export const addTask = async (taskData: any) => {
   }
 };
 
-export const deleteTask = async (taskId: string) => {
+export const deleteTask = async (taskId: number, token: string | null) => {
   try {
+    if (token) {
+      axiosInstance.defaults.headers.common.Authorization = `Bearer ${token}`;
+    }
+
     const response = await axiosInstance.delete(`/assignment/${taskId}`);
     return response.data;
   } catch (error) {
@@ -30,8 +42,12 @@ export const deleteTask = async (taskId: string) => {
   }
 };
 
-export const updateTask = async (taskData: any) => {
+export const updateTask = async (taskData: any, token: string | null) => {
   try {
+    if (token) {
+      axiosInstance.defaults.headers.common.Authorization = `Bearer ${token}`;
+    }
+
     const response = await axiosInstance.put(
       `/assignment/${taskData.id}`,
       taskData

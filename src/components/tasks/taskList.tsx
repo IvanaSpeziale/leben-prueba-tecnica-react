@@ -7,34 +7,34 @@ import {
   deleteTask,
   updateTask,
 } from '../../actions/taskActions';
-import { Task } from '../../types';
-
+import { StatusCode, Task } from '../../types';
 const Tasks: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const { tasks, loading } = useSelector((state: RootState) => state.tasks);
-  const [newTaskTitle, setNewTaskTitle] = useState('');
+  const { tasks = [], loading } = useSelector(
+    (state: RootState) => state.tasks
+  );
+  const [newTaskName, setNewTaskName] = useState('');
 
   useEffect(() => {
     dispatch(fetchTasks());
-  }, [dispatch, fetchTasks]);
+  }, []);
 
   const handleAddTask = async () => {
     try {
       await dispatch(
         addTask({
-          id: '1',
-          title: newTaskTitle,
+          name: newTaskName,
           description: '',
-          status: 'not_started',
+          statusId: StatusCode.NS,
         })
       );
-      setNewTaskTitle('');
+      setNewTaskName('');
     } catch (error) {
       console.error('Error adding task:', error);
     }
   };
 
-  const handleDeleteTask = async (taskId: string) => {
+  const handleDeleteTask = async (taskId: number) => {
     try {
       await dispatch(deleteTask(taskId));
     } catch (error) {
@@ -43,13 +43,13 @@ const Tasks: React.FC = () => {
   };
 
   const handleUpdateTask = async (
-    taskId: string,
-    title: string,
-    status: 'not_started' | 'in_progress' | 'completed'
+    taskId: number,
+    name: string,
+    status: number
   ) => {
     try {
       await dispatch(
-        updateTask({ id: taskId, title, description: '', status })
+        updateTask({ id: taskId, name, description: '', statusId: status })
       );
     } catch (error) {
       console.error('Error updating task:', error);
@@ -61,9 +61,9 @@ const Tasks: React.FC = () => {
       <h1>Tasks</h1>
       <input
         type="text"
-        placeholder="New Task Title"
-        value={newTaskTitle}
-        onChange={(e) => setNewTaskTitle(e.target.value)}
+        placeholder="New Task Name"
+        value={newTaskName}
+        onChange={(e) => setNewTaskName(e.target.value)}
       />
       <button type="button" onClick={handleAddTask}>
         Add Task
@@ -72,20 +72,22 @@ const Tasks: React.FC = () => {
       <ul>
         {tasks.map((task: Task) => (
           <li key={task.id}>
-            {task.title}
+            {task.name}
             <button
               onClick={() =>
-                handleUpdateTask(task.id, task.title, 'in_progress')
+                handleUpdateTask(task.id!, task.name, StatusCode.IP)
               }
             >
               In Progress
             </button>
             <button
-              onClick={() => handleUpdateTask(task.id, task.title, 'completed')}
+              onClick={() =>
+                handleUpdateTask(task.id!, task.name, StatusCode.FIN)
+              }
             >
               Completed
             </button>
-            <button onClick={() => handleDeleteTask(task.id)}>Delete</button>
+            <button onClick={() => handleDeleteTask(task.id!)}>Delete</button>
           </li>
         ))}
       </ul>
