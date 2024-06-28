@@ -11,6 +11,7 @@ const App: React.FC = () => (
     <Router>
       <div className="App" role="banner">
         <Routes>
+          <Route path="/" element={<Login />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Register />} />
           <Route path="/assignment" element={<Tasks />} />
