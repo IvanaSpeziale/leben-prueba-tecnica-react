@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import useAuth from '../../hooks/useAuth';
+import styles from './login.module.scss';
 
 const Login: React.FC = () => {
   const { login, logout, isLoading, isAuthenticated } = useAuth();
@@ -7,13 +9,21 @@ const Login: React.FC = () => {
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const navigate = useNavigate();
 
   const handleLogin = async () => {
+    // Validar campos vacíos
+    if (!username.trim() || !password.trim()) {
+      setError('Please fill out all fields.');
+      return;
+    }
+
     try {
       await login(username, password);
       setError(null);
+      navigate('/assignment');
     } catch (error) {
-      setError('Login failed. Please check your credentials and try again.');
+      setError('Login failed. Please try again.');
       console.error('Error during login:', error);
     }
   };
@@ -28,12 +38,19 @@ const Login: React.FC = () => {
     }
   };
 
+  const redirectToRegister = () => {
+    navigate('/signup');
+  };
+
   return (
-    <div>
+    <div className={styles.container}>
       <h2>Login</h2>
-      {error && <p style={{ color: 'red' }}>{error}</p>}
-      <form role="form" onSubmit={(e) => e.preventDefault()}>
-        <label htmlFor="username">Username</label>
+      {error && <p className={styles.errorMessage}>{error}</p>}
+      <form
+        role="form"
+        onSubmit={(e) => e.preventDefault()}
+        className={styles.form}
+      >
         <input
           id="username"
           type="text"
@@ -42,7 +59,6 @@ const Login: React.FC = () => {
           onChange={(e) => setUsername(e.target.value)}
           role="textbox"
         />
-        <label htmlFor="password">Password</label>
         <input
           id="password"
           type={showPassword ? 'text' : 'password'}
@@ -51,18 +67,25 @@ const Login: React.FC = () => {
           onChange={(e) => setPassword(e.target.value)}
           role="textbox"
         />
-        <button type="button" onClick={handleLogin} disabled={isLoading}>
-          {isLoading ? 'Logging in...' : 'Iniciar sesión'}
-        </button>
         <button type="button" onClick={() => setShowPassword(!showPassword)}>
-          {showPassword ? 'Hide' : 'Show'}
+          {showPassword ? 'Hide' : 'Show Password'}
         </button>
-        <button type="button" onClick={handleLogout}>
-          Logout
+        <button type="button" onClick={handleLogin} disabled={isLoading}>
+          {isLoading ? 'Logging in...' : 'Login'}
         </button>
+        {!isAuthenticated && ( // Mostrar el botón de registro solo si no está autenticado
+          <button type="button" onClick={redirectToRegister}>
+            Register
+          </button>
+        )}
+        {isAuthenticated && (
+          <div>
+            <p>Welcome! You are logged in.</p>
+            <button onClick={handleLogout}>Logout</button>
+          </div>
+        )}
       </form>
-      {isLoading && <p>Loading...</p>}
-      {isAuthenticated && <p>Welcome!</p>}
+      {isLoading && <p className={styles.loading}>Loading...</p>}
     </div>
   );
 };

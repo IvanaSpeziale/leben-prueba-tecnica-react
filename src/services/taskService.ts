@@ -1,7 +1,11 @@
 import axiosInstance from './axiosConfig';
 
-export const getTasks = async () => {
+export const fetchTasks = async (token: string | null) => {
   try {
+    if (token) {
+      axiosInstance.defaults.headers.common.Authorization = `Bearer ${token}`;
+    }
+
     const response = await axiosInstance.get('/assignment');
     return response.data;
   } catch (error) {
@@ -10,8 +14,12 @@ export const getTasks = async () => {
   }
 };
 
-export const addTask = async (taskData: any) => {
+export const addTask = async (taskData: any, token: string | null) => {
   try {
+    if (token) {
+      axiosInstance.defaults.headers.common.Authorization = `Bearer ${token}`;
+    }
+
     const response = await axiosInstance.post('/assignment', taskData);
     return response.data;
   } catch (error) {
@@ -20,23 +28,17 @@ export const addTask = async (taskData: any) => {
   }
 };
 
-export const deleteTask = async (taskId: string) => {
+export const updateTask = async (taskData: any, token: string | null) => {
   try {
-    const response = await axiosInstance.delete(`/assignment/${taskId}`);
-    return response.data;
-  } catch (error) {
-    console.error(`Error deleting task with ID ${taskId}:`, error);
-    throw error;
-  }
-};
+    if (token) {
+      axiosInstance.defaults.headers.common.Authorization = `Bearer ${token}`;
+    }
 
-export const updateTask = async (taskData: any) => {
-  try {
     const response = await axiosInstance.put(
       `/assignment/${taskData.id}`,
       taskData
     );
-    return response.data;
+    return response;
   } catch (error) {
     console.error(`Error updating task with ID ${taskData.id}:`, error);
     throw error;

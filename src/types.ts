@@ -1,8 +1,24 @@
-export interface Task {
+export interface Status {
   id: number;
-  title: string;
+  code: string;
   description: string;
-  status: 'not_started' | 'in_progress' | 'completed';
+  isActive: boolean;
+}
+
+export interface Task {
+  id?: number;
+  name: string;
+  description: string;
+  statusId: number;
+  isActive?: boolean;
+
+  status?: Status;
+}
+
+export enum StatusCode {
+  NS = 1,
+  IP = 2,
+  FIN = 3,
 }
 
 export interface AuthState {

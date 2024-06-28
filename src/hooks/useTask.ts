@@ -1,56 +1,70 @@
-import { useAppDispatch, useAppSelector } from './hook';
-import { RootState } from '../store';
-import {
-  getTasks,
-  addTask,
-  deleteTask,
-  updateTask,
-} from '../actions/taskActions';
+import { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '../store';
+import { fetchTasks, addTask, updateTask } from '../actions/taskActions';
+import { StatusCode } from '../types';
 
-const useTasks = () => {
-  const dispatch = useAppDispatch();
-  const { tasks, loading } = useAppSelector((state: RootState) => state.tasks);
+export const useTask = () => {
+  const dispatch = useDispatch<AppDispatch>();
+  const { tasks = [], loading } = useSelector(
+    (state: RootState) => state.tasks
+  );
+  const [newTaskName, setNewTaskName] = useState('');
+  const [newTaskDescription, setNewTaskDescription] = useState('');
 
-  const fetchTasks = async () => {
+  useEffect(() => {
+    dispatch(fetchTasks());
+  }, []);
+
+  const handleAddTask = async () => {
     try {
-      await dispatch(getTasks());
-    } catch (error) {
-      console.error('Error fetching tasks:', error);
-    }
-  };
-
-  const addNewTask = async (taskData: any) => {
-    try {
-      await dispatch(addTask(taskData));
+      await dispatch(
+        addTask({
+          name: newTaskName,
+          description: '',
+          statusId: StatusCode.NS,
+        })
+      );
+      setNewTaskName('');
+      setNewTaskDescription('');
     } catch (error) {
       console.error('Error adding task:', error);
     }
   };
 
-  const removeTask = async (taskId: string) => {
+  const handleUpdateTask = async (
+    taskId: number,
+    name: string,
+    description: string,
+    status: number
+  ) => {
     try {
-      await dispatch(deleteTask(taskId));
-    } catch (error) {
-      console.error('Error deleting task:', error);
-    }
-  };
-
-  const updateExistingTask = async (taskData: any) => {
-    try {
-      await dispatch(updateTask(taskData));
+      await dispatch(
+        updateTask({ id: taskId, name, description, statusId: status })
+      );
     } catch (error) {
       console.error('Error updating task:', error);
     }
   };
 
+  const handleSave = (
+    taskId: number,
+    editedName: string,
+    editedDescription: string,
+    statusId: number
+  ) => {
+    handleUpdateTask(taskId, editedName, editedDescription, statusId);
+  };
+
   return {
+    handleAddTask,
+    handleUpdateTask,
+    handleSave,
     tasks,
     loading,
-    fetchTasks,
-    addNewTask,
-    removeTask,
-    updateExistingTask,
+    newTaskName,
+    setNewTaskName,
+    newTaskDescription,
+    setNewTaskDescription,
   };
 };
-
-export default useTasks;
