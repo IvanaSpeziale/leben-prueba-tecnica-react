@@ -1,12 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../store';
-import {
-  fetchTasks,
-  addTask,
-  deleteTask,
-  updateTask,
-} from '../actions/taskActions';
+import { fetchTasks, addTask, updateTask } from '../actions/taskActions';
 import { StatusCode } from '../types';
 export const useTask = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -14,6 +9,7 @@ export const useTask = () => {
     (state: RootState) => state.tasks
   );
   const [newTaskName, setNewTaskName] = useState('');
+  const [newTaskDescription, setNewTaskDescription] = useState('');
 
   useEffect(() => {
     dispatch(fetchTasks());
@@ -29,27 +25,21 @@ export const useTask = () => {
         })
       );
       setNewTaskName('');
+      setNewTaskDescription('');
     } catch (error) {
       console.error('Error adding task:', error);
-    }
-  };
-
-  const handleDeleteTask = async (taskId: number) => {
-    try {
-      await dispatch(deleteTask(taskId));
-    } catch (error) {
-      console.error('Error deleting task:', error);
     }
   };
 
   const handleUpdateTask = async (
     taskId: number,
     name: string,
+    description: string,
     status: number
   ) => {
     try {
       await dispatch(
-        updateTask({ id: taskId, name, description: '', statusId: status })
+        updateTask({ id: taskId, name, description, statusId: status })
       );
     } catch (error) {
       console.error('Error updating task:', error);
@@ -58,11 +48,12 @@ export const useTask = () => {
 
   return {
     handleAddTask,
-    handleDeleteTask,
     handleUpdateTask,
     tasks,
     loading,
     newTaskName,
     setNewTaskName,
+    newTaskDescription,
+    setNewTaskDescription,
   };
 };

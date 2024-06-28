@@ -28,20 +28,6 @@ export const addTask = async (taskData: any, token: string | null) => {
   }
 };
 
-export const deleteTask = async (taskId: number, token: string | null) => {
-  try {
-    if (token) {
-      axiosInstance.defaults.headers.common.Authorization = `Bearer ${token}`;
-    }
-
-    const response = await axiosInstance.delete(`/assignment/${taskId}`);
-    return response.data;
-  } catch (error) {
-    console.error(`Error deleting task with ID ${taskId}:`, error);
-    throw error;
-  }
-};
-
 export const updateTask = async (taskData: any, token: string | null) => {
   try {
     if (token) {
@@ -52,7 +38,7 @@ export const updateTask = async (taskData: any, token: string | null) => {
       `/assignment/${taskData.id}`,
       taskData
     );
-    return response.data;
+    return response;
   } catch (error) {
     console.error(`Error updating task with ID ${taskData.id}:`, error);
     throw error;

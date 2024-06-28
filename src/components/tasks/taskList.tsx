@@ -1,75 +1,23 @@
 import React from 'react';
-import { StatusCode, Task } from '../../types';
-import { useTask } from '../../hooks/useTask';
+import { Task, StatusCode } from '../../types';
+import TaskItem from './taskItem';
 
-const Tasks: React.FC = () => {
-  const {
-    handleAddTask,
-    handleDeleteTask,
-    handleUpdateTask,
-    tasks,
-    loading,
-    newTaskName,
-    setNewTaskName,
-  } = useTask();
+interface TaskListProps {
+  tasks: Task[];
+  onUpdate: (
+    taskId: number,
+    name: string,
+    description: string,
+    statusId: StatusCode
+  ) => void;
+}
 
-  // Const tasksNS = tasks.filter((item) => item.statusId === StatusCode.NS);
-  // const tasksIP = tasks.filter((item) => item.statusId === StatusCode.IP);
-  // const tasksFIN = tasks.filter((item) => item.statusId === StatusCode.FIN);
+const TaskList: React.FC<TaskListProps> = ({ tasks, onUpdate }) => (
+  <ul>
+    {tasks.map((task) => (
+      <TaskItem key={task.id} task={task} onUpdate={onUpdate} />
+    ))}
+  </ul>
+);
 
-  const tasksNS = [];
-  const tasksFIN = [];
-  const tasksIP = [];
-
-  tasks.map((task) => {
-    if (task.statusId === StatusCode.NS) {
-      tasksNS.push(task);
-    } else if (task.statusId === StatusCode.FIN) {
-      tasksFIN.push(task);
-    } else if (task.statusId === StatusCode.IP) {
-      tasksIP.push(task);
-    }
-  });
-
-  return (
-    <div>
-      <h1>Tasks</h1>
-      ////////////////////
-      <input
-        type="text"
-        placeholder="New Task Name"
-        value={newTaskName}
-        onChange={(e) => setNewTaskName(e.target.value)}
-      />
-      <button type="button" onClick={handleAddTask}>
-        Add Task
-      </button>
-      {loading && <p>Loading...</p>}
-      ////////////////////
-      <ul>
-        {tasks.map((task: Task) => (
-          <li key={task.id}>
-            {task.name}
-            <button
-              onClick={() =>
-                handleUpdateTask(task.id!, task.name, StatusCode.IP)
-              }
-            >
-              In Progress
-            </button>
-            <button
-              onClick={() =>
-                handleUpdateTask(task.id!, task.name, StatusCode.FIN)
-              }
-            >
-              Completed
-            </button>
-            <button onClick={() => handleDeleteTask(task.id!)}>Delete</button>
-          </li>
-        ))}
-      </ul>
-    </div>
-  );
-};
-
-export default Tasks;
+export default TaskList;

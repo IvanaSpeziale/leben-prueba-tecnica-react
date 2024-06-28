@@ -1,11 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { Task } from '../types';
-import {
-  fetchTasks,
-  addTask,
-  deleteTask,
-  updateTask,
-} from '../actions/taskActions';
+import { fetchTasks, addTask, updateTask } from '../actions/taskActions';
 
 interface TasksState {
   tasks: Task[];
@@ -53,18 +48,7 @@ const tasksSlice = createSlice({
         state.loading = false;
         state.error = action.error.message || 'Error adding task';
       })
-      .addCase(deleteTask.pending, (state) => {
-        state.loading = true;
-        state.error = null;
-      })
-      .addCase(deleteTask.fulfilled, (state, action) => {
-        state.loading = false;
-        state.tasks = state.tasks.filter((task) => task.id !== action.payload);
-      })
-      .addCase(deleteTask.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.error.message || 'Error deleting task';
-      })
+
       .addCase(updateTask.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -72,9 +56,16 @@ const tasksSlice = createSlice({
       .addCase(updateTask.fulfilled, (state, action) => {
         state.loading = false;
         const updatedTask = action.payload;
-        state.tasks = state.tasks.map((task) =>
-          task.id === updatedTask.id ? updatedTask : task
-        );
+        if (updatedTask && updatedTask.id) {
+          state.tasks = state.tasks.map((task) =>
+            task.id === updatedTask.id ? updatedTask : task
+          );
+        } else {
+          console.error(
+            'Payload de updateTask.fulfilled no válido:',
+            updatedTask
+          );
+        }
       })
       .addCase(updateTask.rejected, (state, action) => {
         state.loading = false;
