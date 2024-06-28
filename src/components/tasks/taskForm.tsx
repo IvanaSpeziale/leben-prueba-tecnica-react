@@ -1,4 +1,5 @@
 import React from 'react';
+import styles from './taskForm.module.scss';
 
 interface TaskFormProps {
   newTaskName: string;
@@ -15,21 +16,29 @@ const TaskForm: React.FC<TaskFormProps> = ({
   setNewTaskDescription,
   onAddTask,
 }) => (
-  <div>
-    <input
-      type="text"
-      placeholder="New Task Name"
-      value={newTaskName}
-      onChange={(e) => setNewTaskName(e.target.value)}
-    />
-    <input
-      type="text"
-      placeholder="New Task Description"
-      value={newTaskDescription}
-      onChange={(e) => setNewTaskDescription(e.target.value)}
-    />
-    <button type="button" onClick={onAddTask}>
-      Add Task
+  <div className={styles.taskForm}>
+    <div className={styles.inputGroup}>
+      <input
+        type="text"
+        placeholder="Titulo de la tarea"
+        value={newTaskName}
+        onChange={(e) => setNewTaskName(e.target.value)}
+        className={styles.input}
+      />
+      <input
+        type="text"
+        placeholder="Descripcion"
+        value={newTaskDescription}
+        onChange={(e) => setNewTaskDescription(e.target.value)}
+        className={styles.input}
+      />
+    </div>
+    <button
+      type="button"
+      onClick={onAddTask}
+      className={`${styles.button} ${styles.primary}`}
+    >
+      Agregar
     </button>
   </div>
 );

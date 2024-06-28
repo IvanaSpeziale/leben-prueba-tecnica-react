@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Task, StatusCode } from '../../types';
+import styles from './taskitem.module.scss';
 
 interface TaskItemProps {
   task: Task;
@@ -24,9 +25,11 @@ const TaskItem: React.FC<TaskItemProps> = ({ task, onUpdate }) => {
   };
 
   return (
-    <li>
+    <div className={styles.taskItem}>
+      <div className={styles.taskName}>{task.name}</div>
+      <div className={styles.taskDescription}>{task.description}</div>
       {isEditing ? (
-        <div>
+        <div className={styles.editForm}>
           <input
             type="text"
             value={editedName}
@@ -37,14 +40,20 @@ const TaskItem: React.FC<TaskItemProps> = ({ task, onUpdate }) => {
             value={editedDescription}
             onChange={(e) => setEditedDescription(e.target.value)}
           />
-          <button onClick={handleSave}>Save</button>
+          <button className={styles.saveButton} onClick={handleSave}>
+            Save
+          </button>
         </div>
       ) : (
-        <div>
-          <span>{task.name}</span>
-          <span>{task.description}</span>
-          <button onClick={() => setIsEditing(true)}>Edit</button>
+        <div className={styles.buttonGroup}>
           <button
+            className={styles.editButton}
+            onClick={() => setIsEditing(true)}
+          >
+            Editar
+          </button>
+          <button
+            className={`${styles.statusButton} ${styles.inProgressButton}`}
             onClick={() =>
               onUpdate(
                 task.id!,
@@ -54,9 +63,10 @@ const TaskItem: React.FC<TaskItemProps> = ({ task, onUpdate }) => {
               )
             }
           >
-            In Progress
+            En proceso
           </button>
           <button
+            className={`${styles.statusButton} ${styles.completedButton}`}
             onClick={() =>
               onUpdate(
                 task.id!,
@@ -66,11 +76,11 @@ const TaskItem: React.FC<TaskItemProps> = ({ task, onUpdate }) => {
               )
             }
           >
-            Completed
+            Finalizado
           </button>
         </div>
       )}
-    </li>
+    </div>
   );
 };
 

@@ -3,6 +3,9 @@ import { StatusCode } from '../../types';
 import { useTask } from '../../hooks/useTask';
 import TaskList from './taskList';
 import TaskForm from './taskForm';
+import useAuth from '../../hooks/useAuth';
+import { useNavigate } from 'react-router-dom';
+import styles from './taskcontainer.module.scss';
 
 const TasksContainer: React.FC = () => {
   const {
@@ -16,13 +19,28 @@ const TasksContainer: React.FC = () => {
     setNewTaskDescription,
   } = useTask();
 
+  const { logout } = useAuth();
+  const navigate = useNavigate();
+
   const tasksNS = tasks.filter((task) => task.statusId === StatusCode.NS);
   const tasksIP = tasks.filter((task) => task.statusId === StatusCode.IP);
   const tasksFIN = tasks.filter((task) => task.statusId === StatusCode.FIN);
 
+  const handleLogout = async () => {
+    try {
+      await logout();
+      navigate('/login');
+    } catch (error) {
+      console.error('Error during logout:', error);
+    }
+  };
+
   return (
-    <div>
-      <h1>Tasks</h1>
+    <div className={styles.container}>
+      <button className={styles.logoutButton} onClick={handleLogout}>
+        Logout
+      </button>
+      <h1 className={styles.heading}>Agregar tarea</h1>
       <TaskForm
         newTaskName={newTaskName}
         setNewTaskName={setNewTaskName}
@@ -31,16 +49,16 @@ const TasksContainer: React.FC = () => {
         onAddTask={handleAddTask}
       />
       {loading && <p>Loading...</p>}
-      <div>
-        <h2>Not Started</h2>
+      <div className={styles.taskGroup}>
+        <h2 className={styles.groupHeading}>Sin iniciar</h2>
         <TaskList tasks={tasksNS} onUpdate={handleUpdateTask} />
       </div>
-      <div>
-        <h2>In Progress</h2>
+      <div className={styles.taskGroup}>
+        <h2 className={styles.groupHeading}>En proceso</h2>
         <TaskList tasks={tasksIP} onUpdate={handleUpdateTask} />
       </div>
-      <div>
-        <h2>Completed</h2>
+      <div className={styles.taskGroup}>
+        <h2 className={styles.groupHeading}>Finalizada</h2>
         <TaskList tasks={tasksFIN} onUpdate={handleUpdateTask} />
       </div>
     </div>

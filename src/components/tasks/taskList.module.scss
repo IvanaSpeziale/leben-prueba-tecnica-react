@@ -1,0 +1,12 @@
+.taskList {
+  list-style-type: none;
+  padding: 0;
+}
+
+.taskList__item {
+  margin-bottom: 15px;
+}
+
+.taskList__item:last-child {
+  margin-bottom: 0;
+}

@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../store';
 import { fetchTasks, addTask, updateTask } from '../actions/taskActions';
 import { StatusCode } from '../types';
+
 export const useTask = () => {
   const dispatch = useDispatch<AppDispatch>();
   const { tasks = [], loading } = useSelector(
@@ -46,9 +47,19 @@ export const useTask = () => {
     }
   };
 
+  const handleSave = (
+    taskId: number,
+    editedName: string,
+    editedDescription: string,
+    statusId: number
+  ) => {
+    handleUpdateTask(taskId, editedName, editedDescription, statusId);
+  };
+
   return {
     handleAddTask,
     handleUpdateTask,
+    handleSave,
     tasks,
     loading,
     newTaskName,

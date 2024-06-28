@@ -12,6 +12,12 @@ const Login: React.FC = () => {
   const navigate = useNavigate();
 
   const handleLogin = async () => {
+    // Validar campos vacíos
+    if (!username.trim() || !password.trim()) {
+      setError('Please fill out all fields.');
+      return;
+    }
+
     try {
       await login(username, password);
       setError(null);
@@ -48,38 +54,38 @@ const Login: React.FC = () => {
         <input
           id="username"
           type="text"
-          placeholder="Nombre de usuario"
+          placeholder="Username"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
           role="textbox"
         />
-
         <input
           id="password"
           type={showPassword ? 'text' : 'password'}
-          placeholder="Contraseña"
+          placeholder="Password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           role="textbox"
         />
         <button type="button" onClick={() => setShowPassword(!showPassword)}>
-          {showPassword ? 'Hide' : 'Mostrar contraseña'}
+          {showPassword ? 'Hide' : 'Show Password'}
         </button>
         <button type="button" onClick={handleLogin} disabled={isLoading}>
-          {isLoading ? 'Logging in...' : 'Iniciar sesión'}
+          {isLoading ? 'Logging in...' : 'Login'}
         </button>
-        <button type="button" onClick={handleLogout}>
-          Logout
-        </button>
+        {!isAuthenticated && ( // Mostrar el botón de registro solo si no está autenticado
+          <button type="button" onClick={redirectToRegister}>
+            Register
+          </button>
+        )}
+        {isAuthenticated && (
+          <div>
+            <p>Welcome! You are logged in.</p>
+            <button onClick={handleLogout}>Logout</button>
+          </div>
+        )}
       </form>
       {isLoading && <p className={styles.loading}>Loading...</p>}
-      {isAuthenticated && (
-        <p>
-          Welcome! You are logged in.
-          <br />
-          <button onClick={redirectToRegister}>Go to Register</button>
-        </p>
-      )}
     </div>
   );
 };
