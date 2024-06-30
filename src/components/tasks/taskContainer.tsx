@@ -37,9 +37,12 @@ const TasksContainer: React.FC = () => {
 
   return (
     <div className={styles.container}>
-      <button className={styles.logoutButton} onClick={handleLogout}>
-        Logout
-      </button>
+      <header className={styles.header}>
+        <h1 className={`${styles['indie-flower-regular']}`}>Lista de tareas</h1>
+        <button className={styles.logoutButton} onClick={handleLogout}>
+          Logout
+        </button>
+      </header>
       <h1 className={styles.heading}>Agregar tarea</h1>
       <TaskForm
         newTaskName={newTaskName}
@@ -49,17 +52,19 @@ const TasksContainer: React.FC = () => {
         onAddTask={handleAddTask}
       />
       {loading && <p>Loading...</p>}
-      <div className={styles.taskGroup}>
-        <h2 className={styles.groupHeading}>Sin iniciar</h2>
-        <TaskList tasks={tasksNS} onUpdate={handleUpdateTask} />
-      </div>
-      <div className={styles.taskGroup}>
-        <h2 className={styles.groupHeading}>En proceso</h2>
-        <TaskList tasks={tasksIP} onUpdate={handleUpdateTask} />
-      </div>
-      <div className={styles.taskGroup}>
-        <h2 className={styles.groupHeading}>Finalizada</h2>
-        <TaskList tasks={tasksFIN} onUpdate={handleUpdateTask} />
+      <div className={styles.taskGroups}>
+        <div className={styles.taskGroup}>
+          <h2 className={styles.groupHeading}>Sin iniciar</h2>
+          <TaskList tasks={tasksNS} onUpdate={handleUpdateTask} />
+        </div>
+        <div className={styles.taskGroup}>
+          <h2 className={styles.groupHeading}>En proceso</h2>
+          <TaskList tasks={tasksIP} onUpdate={handleUpdateTask} />
+        </div>
+        <div className={styles.taskGroup}>
+          <h2 className={styles.groupHeading}>Finalizada</h2>
+          <TaskList tasks={tasksFIN} onUpdate={handleUpdateTask} />
+        </div>
       </div>
     </div>
   );

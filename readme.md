@@ -38,19 +38,19 @@ Implementación de un filtro por estado de tarea para facilitar la búsqueda.
 
 1. Clone el repositorio:
 
-   ```bash
-   git clone https://github.com/IvanaSpeziale/leben-prueba-tecnica-react.git
-   ```
+  ```bash
+  git clone https://github.com/IvanaSpeziale/leben-prueba-tecnica-react.git
+  ```
 
 2. Instale las dependencias:
 
-   ```bash
-   npm install
-   ```
+  ```bash
+  npm install
+  ```
 
 3. Inicie el servidor:
-   ```bash
-   npm run dev
-   ```
+  ```bash
+  npm run dev
+  ```
 
 Con estos pasos, el frontend estará configurado y en ejecución.
