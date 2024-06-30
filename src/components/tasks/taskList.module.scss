@@ -1,12 +1,15 @@
 .taskList {
   list-style-type: none;
   padding: 0;
+  position: relative; // Necesario para el solapamiento
 }
 
 .taskList__item {
-  margin-bottom: 15px;
-}
+  margin-bottom: -50px; // Ajusta este valor según el grado de solapamiento que desees
+  z-index: 1;
+  transition: z-index 0.3s ease;
 
-.taskList__item:last-child {
-  margin-bottom: 0;
+  &:hover {
+    z-index: 10; // Trae el elemento al frente al pasar el ratón
+  }
 }

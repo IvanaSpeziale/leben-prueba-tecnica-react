@@ -18,14 +18,27 @@ const TaskItem: React.FC<TaskItemProps> = ({ task, onUpdate }) => {
   const [editedDescription, setEditedDescription] = useState(
     task.description || ''
   );
+  const [isHovered, setIsHovered] = useState(false);
 
   const handleSave = () => {
     onUpdate(task.id!, editedName, editedDescription, task.statusId);
     setIsEditing(false);
   };
 
+  const handleTouch = (e: React.TouchEvent) => {
+    // eslint-disable-next-line no-negated-condition
+    if (!(e.target as Element).closest(`.${styles.taskItem}`)) {
+      setIsHovered(false);
+    } else {
+      setIsHovered(true);
+    }
+  };
+
   return (
-    <div className={styles.taskItem}>
+    <div
+      className={`${styles.taskItem} ${isHovered ? styles.hover : ''}`}
+      onTouchStart={handleTouch}
+    >
       <div className={styles.taskName}>{task.name}</div>
       <div className={styles.taskDescription}>{task.description}</div>
       {isEditing ? (
